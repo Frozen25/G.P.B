@@ -1,6 +1,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <iostream>
+#include <iostream>     // std::cout
+#include <algorithm>    // std::random_shuffle
+#include <vector>       // std::vector
 
 using namespace cv;
 using namespace std;
@@ -21,6 +23,14 @@ int main( int argc, char** argv )
         cout <<  "Could not open or find the image" << std::endl ;
         return -1;
     }
+
+    // trying to create a matrix as same width and height as the image file being loaded.
+    Mat  mat2(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
+    
+    int divx = 20;
+    int divy = 20;
+
+    /*
 
     Mat part1 (image.rows, image.cols/3, CV_8UC3, Scalar(0, 0, 0));
     Mat part2 (image.rows, image.cols/3, CV_8UC3, Scalar(0, 0, 0));
@@ -55,7 +65,7 @@ int main( int argc, char** argv )
         }
         //std::cout << std::endl;
     }
-
+*/
 
 /*
     Mat example(300, 300, CV_8UC3, Scalar(0, 0, 0));
@@ -70,17 +80,54 @@ int main( int argc, char** argv )
     }
 
 */
+    
+
+   // cv::Size smallSize(110,70);
+    std::vector<Mat> smallImages;
+
+    int sizex = image.cols/divx ;
+    int sizey = image.rows/divy ;
+
+    for (int y = 0; y < image.rows; y += sizey)
+    {
+        for (int x = 0; x < image.cols; x += sizex)
+        {
+            cv::Rect rect =  cv::Rect(x,y, sizex, sizey);
+            smallImages.push_back(cv::Mat(image, rect));
+        }
+    }
+    std::random_shuffle ( smallImages.begin(), smallImages.end() );
+
+    int iterador = 0;
+    for (int y = 0; y < image.rows; y += sizey)
+    {
+        for (int x = 0; x < image.cols; x += sizex)
+        {
+            smallImages[iterador].copyTo(mat2(Rect(x, y, sizex, sizey)));
+            ++iterador;
+            // cv::Rect rect =  cv::Rect(x,y, sizex, sizey);
+            // smallImages.push_back(cv::Mat(image, rect));
+        }
+    }
+
+    
+
+    
+//src.copyTo(dst(Rect(left, top, src.cols, src.rows)));
+
+
+
     namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
     imshow( "Display window", image );                   // Show our image inside it.
 
     namedWindow( "Display1", WINDOW_AUTOSIZE );
-    imshow( "Display1", part1 );  
+    imshow( "Display1", mat2 );  
 
     namedWindow( "Display2", WINDOW_AUTOSIZE );
-    imshow( "Display2", part2 );  
+    imshow( "Display2", mat2 );  
 
-    namedWindow( "Display3", WINDOW_AUTOSIZE );
-    imshow( "Display3", part3 );
+    //namedWindow( "Display3", WINDOW_AUTOSIZE );
+    //imshow( "Display3", part3 );
 
     waitKey(0);                                          // Wait for a keystroke in the window
     return 0;
