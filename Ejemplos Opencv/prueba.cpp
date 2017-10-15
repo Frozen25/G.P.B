@@ -4,8 +4,17 @@
 #include <algorithm>    // std::random_shuffle
 #include <vector>       // std::vector
 
+
 using namespace cv;
 using namespace std;
+
+void eq_block(Mat i1 , Mat i2){
+    int i = i1.cols;
+    int j = i1.rows;
+    if (i1.at<cv::Vec3b>(i, j)[0] == i2.at<cv::Vec3b>(i, j)[0])
+        std::cout << 1 << std::endl;
+}
+
 
 int main( int argc, char** argv )
 {
@@ -24,11 +33,12 @@ int main( int argc, char** argv )
         return -1;
     }
 
+    srand (time(NULL));
     // trying to create a matrix as same width and height as the image file being loaded.
     Mat  mat2(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
     
-    int divx = 20;
-    int divy = 20;
+    int divx = 2;
+    int divy = 2;
 
     /*
 
@@ -67,20 +77,7 @@ int main( int argc, char** argv )
     }
 */
 
-/*
-    Mat example(300, 300, CV_8UC3, Scalar(0, 0, 0));
-    for (int i=0;i<example.rows;++i){
-        for(int j=0;j<example.cols;++j){
-            if ( 0<j && j<100)
-                example.at<cv::Vec3b>(i, j)[0] = 255;
-            if (100<j && j<200)
-                example.at<cv::Vec3b>(i, j)[1] = 255;   
-            if (200<j && j<300)
-                example.at<cv::Vec3b>(i, j)[2] = 255;
-    }
 
-*/
-    
 
    // cv::Size smallSize(110,70);
     std::vector<Mat> smallImages;
@@ -92,6 +89,7 @@ int main( int argc, char** argv )
     {
         for (int x = 0; x < image.cols; x += sizex)
         {
+            //std::cout << (int)image.at<cv::Vec3b>(x, y)[0] << std::endl;
             cv::Rect rect =  cv::Rect(x,y, sizex, sizey);
             smallImages.push_back(cv::Mat(image, rect));
         }
@@ -111,20 +109,77 @@ int main( int argc, char** argv )
     }
 
     
-
-    
-//src.copyTo(dst(Rect(left, top, src.cols, src.rows)));
-
-
-
     namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
     imshow( "Display window", image );                   // Show our image inside it.
 
     namedWindow( "Display1", WINDOW_AUTOSIZE );
     imshow( "Display1", mat2 );  
 
-    namedWindow( "Display2", WINDOW_AUTOSIZE );
-    imshow( "Display2", mat2 );  
+    for (int y = 0; y < image.rows; y += sizey)
+    {
+        for (int x = 0; x < image.cols; x += sizex)
+        {
+
+            if(    (int)mat2.at<cv::Vec3b>(y, x)[0] == (int)image.at<cv::Vec3b>(y, x)[0]
+                && (int)mat2.at<cv::Vec3b>(y, x)[1] == (int)image.at<cv::Vec3b>(y, x)[1]
+                && (int)mat2.at<cv::Vec3b>(y, x)[2] == (int)image.at<cv::Vec3b>(y, x)[2]
+
+               
+                 && (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[0] == (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[0] 
+                 && (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[1] == (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[1]  
+                 && (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[2] == (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[2]
+
+                ){
+                std:: cout << 1 << "\t" ;
+            }
+            else
+                std:: cout << 0 << "\t";
+
+
+/*
+            //i1.at<cv::Vec3b>(i, j)[0] == i2.at<cv::Vec3b>(i, j)[0])
+            std:: cout << "B: " << x <<"," << y << "    \t" ;
+
+            std::cout << (int)mat2.at<cv::Vec3b>(x, y)[0] << " - ";
+            std::cout << (int)image.at<cv::Vec3b>(x, y)[0] << "    \t";
+
+            std:: cout << "R: "  << x <<"," << y << "    \t" ;
+            std::cout << (int)mat2.at<cv::Vec3b>(x, y)[1] << " - ";
+            std::cout << (int)image.at<cv::Vec3b>(x, y)[1] << "    \t";
+
+            std:: cout << "G: "  << x <<"," << y << "    \t" ;
+            std::cout << (int)mat2.at<cv::Vec3b>(x, y)[2] << " - ";
+            std::cout << (int)image.at<cv::Vec3b>(x, y)[2] << std::endl;
+
+
+            std::cout << y << " , " << x << "\n"
+                << "\tB: " << (int)mat2.at<cv::Vec3b>(y, x)[0] << "-" << (int)image.at<cv::Vec3b>(y, x)[0] << "- \n" 
+                << "\tR: " << (int)mat2.at<cv::Vec3b>(y, x)[1] << "-" << (int)image.at<cv::Vec3b>(y, x)[1] << "- \n" 
+                << "\tG: " << (int)mat2.at<cv::Vec3b>(y, x)[2] << "-" << (int)image.at<cv::Vec3b>(y, x)[2] << "- \n" 
+
+               
+                << "\tB: " << (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[0] << "-" << (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[0] << "- \n" 
+                << "\tR: " << (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[1] << "-" << (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[1] << "- \n" 
+                << "\tG: " << (int)mat2.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[2] << "-" << (int)image.at<cv::Vec3b>(y+sizey/2, x+sizex/2)[2]
+                ;
+                std:: cout << std:: endl;
+                */
+    
+            
+        }
+        std::cout << "\n";
+    }
+
+
+
+    
+
+    
+//src.copyTo(dst(Rect(left, top, src.cols, src.rows)));
+
+
+
+   
 
     //namedWindow( "Display3", WINDOW_AUTOSIZE );
     //imshow( "Display3", part3 );
