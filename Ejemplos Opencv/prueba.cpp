@@ -195,6 +195,8 @@ int main( int argc, char** argv )
     
 
 
+
+
 //crear matrices apartir del array de imagenes
     iterador = 0;
     for (int y = 0; y < image.rows; y += sizey)
@@ -220,9 +222,11 @@ int main( int argc, char** argv )
 
 
 
-
     int int_original[divx*divy];
     Mat hijo_array[divx*divy];
+ 
+
+
 
     Mat  mat_hijo(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
 
@@ -246,12 +250,15 @@ int main( int argc, char** argv )
             }
             
             if (!smallImages_original_vect && !mat3_vect_original_vect ){
+                Mat  black(sizey, sizex,CV_8UC3,Scalar(0, 0, 0)); 
+                hijo_array[i] = black ; 
                 int_original[i] = (0);
             }        
     }
 
     
     Mat  mat_hijo0(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
+
 
     iterador = 0;
     for (int y = 0; y < image.rows; y += sizey)
@@ -263,31 +270,78 @@ int main( int argc, char** argv )
             ++iterador;
         }
     }
-    
+
 
     
-
     
+
+ //   std::cout << "colocacion resto genes\n";
+
+    std::vector<Mat> randomHijo;
     for (int i = 0; i < divx*divy; ++i){
 
         bool utilizada1 = false;
-        bool utilizada2 = false;
+        //bool utilizada2 = false;
 
         for(int j=0 ; j<divx*divy; ++j ){
+            //std::cout << "imagen["<< i << "]" << " hijo["<< j <<"]\n";
+   
+
+            if ((comparacion_cuadros(&hijo_array[j], &smallImages[i] , sizex, sizey ))){
+                //std::cout << "imagen[" << i << "] coincide con hijo[" << j << "]\n";
+                utilizada1 = true;
+            }
+            
+            
+        }
+        if (!utilizada1){
+            randomHijo.push_back(smallImages[i]);
+        }
+    }
+
+  //  std::cout << "resto genes en vector\n";
+
+    std::random_shuffle ( randomHijo.begin(), randomHijo.end() );
+
+//std::cout << "shuffle resto genes  - vectSize" << randomHijo.size() <<  "\n";
+
+
+
+
+    iterador = 0;
+    for (int i=0 ; i< divx*divy ; ++i){
+        if (int_original[i] == 0){
+           // std::cout << iterador << endl;
+            hijo_array[i] = randomHijo.at(iterador);
+            ++iterador;
+        }
+
+    }
+  //  std::cout << "resto genes en array\n";
+
+
+            /*
             if ((comparacion_cuadros(&original_vect[j], &smallImages[i] , sizex, sizey )) && int_original[j] == 1 )
             {
                 std::cout << "imagen1 [" << i << "] coincide con la original[" << j << "] y ya fue utilizada\n";
                 utilizada1 = true;
 
             }
+            
             if ((comparacion_cuadros(&original_vect[j], &mat3_vect[i] , sizex, sizey )) && int_original[j] == 1 )
             {
                 std::cout << "imagen2 [" << i << "] coincide con la original[" << j << "] y ya fue utilizada\n";
                 utilizada2 = true;
 
-            }
+            }*/
             
-        }
+    
+
+
+
+
+
+        /*
         if(int_original[i] == 0)
         {
             if (utilizada1)
@@ -329,8 +383,10 @@ int main( int argc, char** argv )
             }
 
         }
+
+        */
       
-    }
+    
 
     iterador = 0;
     for (int y = 0; y < image.rows; y += sizey)
@@ -416,17 +472,17 @@ int main( int argc, char** argv )
     namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
     imshow( "Display window", image );                   // Show our image inside it.
 
-    namedWindow( "Display1", WINDOW_AUTOSIZE );
-    imshow( "Display1", mat2 );  
+    namedWindow( "Padre 1", WINDOW_AUTOSIZE );
+    imshow( "Padre 1", mat2 );  
 
-    namedWindow( "Display2", WINDOW_AUTOSIZE );
-    imshow( "Display2", mat3 );
+    namedWindow( "Padre 2", WINDOW_AUTOSIZE );
+    imshow( "Padre 2", mat3 );
 
-    namedWindow( "Display Hijo", WINDOW_AUTOSIZE );
-    imshow( "Display Hijo", mat_hijo );
+    namedWindow( "Hijo Final", WINDOW_AUTOSIZE );
+    imshow( "Hijo Final", mat_hijo );
 
-    namedWindow( "Display Hijo0", WINDOW_AUTOSIZE );
-    imshow( "Display Hijo0", mat_hijo0 );
+    namedWindow( "Hijo0", WINDOW_AUTOSIZE );
+    imshow( "Hijo0", mat_hijo0 );
 
 
 
