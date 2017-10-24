@@ -1,29 +1,56 @@
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <iostream>     // std::cout
 #include <algorithm>    // std::random_shuffle
 #include <vector>       // std::vector
+#include <iterator> // for std::begin, std::end
+
 #include "common.h"
+
 
 
 class Individual {
 
     private: 
-        int fitness = 0;
-        Mat image_array[divx*divy];
-        int fitness_array[divx*divy];
+        int fitness;
 
-        void mat_to_array(Mat* imageP );
+        std::vector<cv::Mat> image_vector;
+        std::vector<int> fitness_vector;
+
+        //cv::Mat image_array[];
+        //int fitness_array[];
+
+        void mat_to_array(cv::Mat* imageP );
+        bool comparacion_cuadros(cv::Mat* mat1, cv::Mat* mat2 );
 
     
     public:
         Individual();
-        Individual(Mat _image);
-        Individual(Mat images[divx*divy] );
-        Individual (Mat padre1[] , Mat padre2[]  , int fit_padre1[] , int fit_padre2[]  );
-
-        void randomize();
-        void getFitness_Array(Mat original[]);
-        int getFitness();
         
-}
+        Individual(cv::Mat _image);
+        
+        
+        Individual(std::vector<cv::Mat>* images , bool x );
+
+
+        //Individual(cv::Mat padre1[] , cv::Mat padre2[]  , int fit_padre1[] , int fit_padre2[]  );
+
+
+        void array_to_mat(cv::Mat* imageP );
+        void randomize();
+        void getFitness_Array(std::vector<cv::Mat>* original);
+        void calcFitness();
+        int getFitness();
+
+        
+        //cv::Mat* get_array();
+        std::vector<cv::Mat>* get_vector();
+        
+
+
+        
+};
+
+#endif //INDIVIDUAL_H

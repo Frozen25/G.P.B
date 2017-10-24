@@ -1,23 +1,48 @@
+#include "Individual.h"
+
 
 
 Individual::Individual(){
-        
-    }
-
-Individual::Individual(Mat* _image ){
-    image_array[divx*divy];
-    fitness_array[divx*divy];
-    mat_to_array(_image);
-}
-
-Individual::Individual(Mat images[divx*divy] ){
-    image_array = images;
-    fitness_array[divx*divy];
-    random_shuffle( &(image_array[0]), &(image_array[divx*divy-1]));
+    fitness = 0;
+    fitness_vector.resize(divx*divy);
+    image_vector.resize(divx*divy);
+    //image_array[divx*divy];
+    //fitness_array[divx*divy];
 }
 
 
-Individual::Individual (Mat padre1[] , Mat padre2[]  , int fit_padre1[] , int fit_padre2[]  ){
+
+Individual::Individual(cv::Mat _image ){
+
+    
+    fitness = 0;
+    fitness_vector.resize(divx*divy);
+    image_vector.resize(divx*divy);
+    //image_array[divx*divy];
+    //fitness_array[divx*divy];
+
+    std::cout << "mat -> array \n";
+    mat_to_array(&_image);
+}
+
+
+
+
+Individual::Individual(std::vector<cv::Mat>* images , bool x){
+
+    fitness_vector.resize(divx*divy);
+    image_vector.resize(divx*divy);
+
+    image_vector = *images;
+
+    std::random_shuffle( &(image_vector[0]), &(image_vector[divx*divy-1]));
+
+}
+
+/*
+Individual::Individual (cv::Mat padre1[] , cv::Mat padre2[]  , int fit_padre1[] , int fit_padre2[]  ){
+
+    fitness = 0;
 
     image_array[divx*divy];
 
@@ -42,7 +67,7 @@ Individual::Individual (Mat padre1[] , Mat padre2[]  , int fit_padre1[] , int fi
             }
             
             if (!(fit_padre1[i]) && !(fit_padre2[i]) ){
-                Mat  black(sizey, sizex,CV_8UC3,Scalar(0, 0, 0)); 
+                cv::Mat  black(sizey, sizex,CV_8UC3,Scalar(0, 0, 0)); 
                 hijo_array[i] = black ; 
                 //int_original[i] = (0);
             }        
@@ -85,40 +110,97 @@ Individual::Individual (Mat padre1[] , Mat padre2[]  , int fit_padre1[] , int fi
 
 }
 
+*/
 
 void Individual::randomize(){
-    random_shuffle( &(image_array[0]), &(image_array[divx*divy-1]));
+    std::random_shuffle( &(image_vector[0]), &(image_vector[divx*divy-1]));
 }
 
-void Individual::getFitness_Array(Mat original[]){
+
+void Individual::getFitness_Array(std::vector<cv::Mat>* original){
     for (int i = 0; i < divx*divy; ++i){
-        if (comparacion_cuadros(&(image_array[i]), &(original[i])))
-            fitness_array[i] = 1;
+        if (comparacion_cuadros(&(image_vector[i]), &(original->at(i)) ) )
+            fitness_vector[i] = 1;
         else
-            fitness_array[i] = 0;
+            fitness_vector[i] = 0;
     }
 }
+
+
+void Individual::calcFitness(){
+    int contador = 0;
+        for (int i = 0; i < divx*divy; ++i){
+            if(fitness_vector[i]==1){
+                ++contador;
+            }
+        }
+        fitness = contador;
+}
+
 
 int Individual::getFitness(){
-    int contador = 0;
-    for (int i = 0; i < divx*divy; ++i){
-     
-        if(fitness_array[i]==1){
-            ++contador;
-        }
-    }
-    return contador;
+    return fitness;
 }
 
-void Individual::mat_to_array(Mat* imageP ){
+
+
+void Individual::array_to_mat(cv::Mat* imageP ){
+    int iterador = 0;
+    for (int y = 0; y < imageP->rows; y += sizey)
+    {
+        for (int x = 0; x < imageP->cols; x += sizex)
+        {
+            image_vector.at(iterador).copyTo((*imageP)(cv::Rect(x, y, sizex, sizey)));
+            ++iterador;
+
+        }
+    }
+}
+
+
+
+void Individual::mat_to_array(cv::Mat* imageP ){
+
+
     int iterador = 0;
     for (int y = 0; y < imageP->rows; y += sizey)
     {
         for (int x = 0; x < imageP->cols; x += sizex)
         {
             cv::Rect rect =  cv::Rect(x,y, sizex, sizey);
-            image_array[iterador] = cv::Mat((*imageP), rect);
+            image_vector[iterador] = cv::Mat((*imageP), rect);
             ++iterador;
         }
     }
 }
+
+/*
+
+cv::Mat* Individual::get_array(){
+    return image_array;
+}
+
+
+*/
+
+std::vector<cv::Mat>* Individual::get_vector(){
+    return &image_vector;
+}
+
+bool Individual::comparacion_cuadros(cv::Mat* mat1, cv::Mat* mat2 ){
+    if(    
+                //compara primer pixel del cuadro
+                   (int)mat2->at<cv::Vec3b>(0, 0)[0] == (int)mat1->at<cv::Vec3b>(0, 0)[0]
+                && (int)mat2->at<cv::Vec3b>(0, 0)[1] == (int)mat1->at<cv::Vec3b>(0, 0)[1]
+                && (int)mat2->at<cv::Vec3b>(0, 0)[2] == (int)mat1->at<cv::Vec3b>(0, 0)[2]
+
+                //compara pixel del centro del cuadro
+                && (int)mat2->at<cv::Vec3b>(sizey/2, sizex/2)[0] == (int)mat1->at<cv::Vec3b>(sizey/2, sizex/2)[0] 
+                && (int)mat2->at<cv::Vec3b>(sizey/2, sizex/2)[1] == (int)mat1->at<cv::Vec3b>(sizey/2, sizex/2)[1]  
+                && (int)mat2->at<cv::Vec3b>(sizey/2, sizex/2)[2] == (int)mat1->at<cv::Vec3b>(sizey/2, sizex/2)[2]
+                )
+        return true;
+    else
+        return false;
+}
+
