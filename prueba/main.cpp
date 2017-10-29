@@ -170,98 +170,115 @@ int main( int argc, char** argv )
     sizey = image.rows/divy ;
     srand (time(NULL));
 
-    std:: cout << sizex << " - " << sizey << "\n";
+    //std:: cout << sizex << " - " << sizey << "\n";
 
-    Individual nothing;
-    Individual reference(image);
-    //std::cout<< reference.getFitness() ;
+    int bestcounter = 0;
 
 
-    std:: cout << "creo 1\n";
-    std::vector<Individual>  Population(10, Individual(reference.get_vector() , true));
-
-    std::cout << "creacion de 10\n";
-
-    for (int m = 0; m < 10 ; ++m){
-        Individual* temp = &Population[m];
-        temp->randomize();
-        temp->getFitness_Array(reference.get_vector());
-        temp->calcFitness();
-        //int p = temp->getFitness();
-        std::cout << temp->getFitness() << " ";
-
-
-    }
-    std::cout << std::endl;
-
-    Individual* b1;
-    Individual* b2;
-    Individual* b3;
-
-    int bb1=0;
-    int bb2=0;
-    int bb3=0;
-
-    int ref1=0;
-    int ref2=0;
-    int ref3=0;
+    Population(image);
 
 
 
+    //for( bestcounter < divx*divy ){
 
+        Individual reference(image);
+        //std::cout<< reference.getFitness() ;
 
-    for (int j = 0; j < 10; j++){
-        Individual* temp = &Population[j];
-        int p = temp->getFitness();
-        if (p > bb1){
-            b1 = temp;
-            bb1 = p;
-            ref1 = j;
+    //    std:: cout << "creo 1\n";
+        std::vector<Individual>  Population(10, Individual(reference.get_vector() , true));
+
+    //    std::cout << "creacion de 10\n";
+
+        std::cout << "Fitness list: ";
+        for (int m = 0; m < 10 ; ++m){
+            Individual* temp = &Population[m];
+            temp->randomize();
+            temp->getFitness_Array(reference.get_vector());
+            temp->calcFitness();
+            //int p = temp->getFitness();
+            std::cout << temp->getFitness() << " ";
         }
-    }
+        std::cout << std::endl;
 
-    for (int j = 0; j < 10; j++){
-        Individual* temp = &Population[j];
-        int p = temp->getFitness();
-        if ((p > bb2)&&(j!=ref1)){
-            b2 = temp;
-            bb2 = p;
-            ref2 = j;
+        Individual* b1;
+        Individual* b2;
+        Individual* b3;
+
+        int bb1=0;
+        int bb2=0;
+        int bb3=0;
+
+        int ref1=0;
+        int ref2=0;
+        int ref3=0;
+
+
+
+
+
+        for (int j = 0; j < 10; j++){
+            Individual* temp = &Population[j];
+            int p = temp->getFitness();
+            if (p > bb1){
+                b1 = temp;
+                bb1 = p;
+                ref1 = j;
+            }
         }
-    }
-    for (int j = 0; j < 10; j++){
-        Individual* temp = &Population[j];
-        int p = temp->getFitness();
-        if ((p > bb3)&&(j!=ref1) &&(j!=ref2)){
-            b3 = temp;
-            bb3 = p;
-            ref3 = j;
+
+        for (int j = 0; j < 10; j++){
+            Individual* temp = &Population[j];
+            int p = temp->getFitness();
+            if ((p > bb2)&&(j!=ref1)){
+                b2 = temp;
+                bb2 = p;
+                ref2 = j;
+            }
         }
-    }
-       
-    std::cout << "best: " << bb1 << " at " << ref1 << std::endl;
-    std::cout << "2best: " << bb2 << " at " << ref2 << std::endl;
-    std::cout << "2best: " << bb3 << " at " << ref3 << std::endl;
+        for (int j = 0; j < 10; j++){
+            Individual* temp = &Population[j];
+            int p = temp->getFitness();
+            if ((p > bb3)&&(j!=ref1) &&(j!=ref2)){
+                b3 = temp;
+                bb3 = p;
+                ref3 = j;
+            }
+        }
 
-    cv::Mat  mat1(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
-    cv::Mat  mat2(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
-    cv::Mat  mat3(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
+        bestcounter = bb1;
+           
+        std::cout << "  best: " << bb1 << " at " << ref1 << std::endl;
+        std::cout << "2 best: " << bb2 << " at " << ref2 << std::endl;
+        std::cout << "3 best: " << bb3 << " at " << ref3 << std::endl;
 
-    b1->array_to_mat(&mat1);
-    b2->array_to_mat(&mat2);
-    b3->array_to_mat(&mat3);
+        cv::Mat  mat1(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
+        cv::Mat  mat2(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
+        cv::Mat  mat3(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
 
-    namedWindow( "Display window", WINDOW_AUTOSIZE );
-    imshow( "Display window", image );                 
+        b1->array_to_mat(&mat1);
+        b2->array_to_mat(&mat2);
+        b3->array_to_mat(&mat3);
 
-    namedWindow( "Padre 1", WINDOW_AUTOSIZE );
-    imshow( "Padre 1", mat1 );  
+        namedWindow( "Display window", WINDOW_AUTOSIZE );
+        imshow( "Display window", image );                 
 
-    namedWindow( "Padre 2", WINDOW_AUTOSIZE );
-    imshow( "Padre 2", mat2 );
+        namedWindow( "Padre 1", WINDOW_AUTOSIZE );
+        imshow( "Padre 1", mat1 );  
 
-    namedWindow( "Hijo Final", WINDOW_AUTOSIZE );
-    imshow( "Hijo Final", mat3 );
+        namedWindow( "Padre 2", WINDOW_AUTOSIZE );
+        imshow( "Padre 2", mat2 );
+
+        namedWindow( "Hijo Final", WINDOW_AUTOSIZE );
+        imshow( "Hijo Final", mat3 );
+
+
+        waitKey(0);   
+
+
+        
+        
+
+//    }
 
     /*
     // trying to create a matrix as same width and height as the image file being loaded.

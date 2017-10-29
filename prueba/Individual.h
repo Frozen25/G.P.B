@@ -35,7 +35,7 @@ class Individual {
         Individual(std::vector<cv::Mat>* images , bool x );
 
 
-        //Individual(cv::Mat padre1[] , cv::Mat padre2[]  , int fit_padre1[] , int fit_padre2[]  );
+        Individual( std::vector<cv::Mat>* padre1 , std::vector<cv::Mat>* padre2  , std::vector<int>* fit_padre1 , std::vector<int>* fit_padre2  );
 
 
         void array_to_mat(cv::Mat* imageP );
@@ -47,6 +47,7 @@ class Individual {
         
         //cv::Mat* get_array();
         std::vector<cv::Mat>* get_vector();
+        std::vector<int>* get_fit_vector();
         
 
 
