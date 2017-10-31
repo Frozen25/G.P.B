@@ -276,60 +276,7 @@ int main( int argc, char** argv )
 
 
         
-        
 
-//    }
-
-    /*
-    // trying to create a matrix as same width and height as the image file being loaded.
-    Mat  mat2(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
-    Mat  mat3(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
-
-    Mat original_arr[divx*divy];
-    mat_to_array(&image  , original_arr );
-
-    Mat random1[divx*divy] =  original_arr;
-    Mat random2[divx*divy] = original_arr;
-
-    random_shuffle( &(random1[0]), &(random1[divx*divy]));
-    random_shuffle( &(random2[0]), &(random2[divx*divy]));
-
-    array_to_mat(&mat2 ,random1 );
-    array_to_mat(&mat3 ,random2 );
-
-    int int_original[divx*divy];
-    int int_padre1[divx*divy];
-    int int_padre2[divx*divy];
-
-    get_fitness_array( random1,  original_arr ,int_padre1);
-    get_fitness_array( random2,  original_arr ,  int_padre2);
-
-    int fitpadre1 = fitness_counter(int_padre1 );
-    int fitpadre2 = fitness_counter(int_padre2 );
-
-    std::cout << fitpadre1 << "  -  " << fitpadre2 << std::endl;
-
-    Mat hijo_array[divx*divy];
-    Mat  mat_hijo(image.rows, image.cols,CV_8UC3,Scalar(0, 0, 0)); 
-
-    crossover(random1, random2, hijo_array , int_padre1 , int_padre2 );
-    
-    array_to_mat(&mat_hijo ,hijo_array );
-
-    namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
-    imshow( "Display window", image );                   // Show our image inside it.
-
-    namedWindow( "Padre 1", WINDOW_AUTOSIZE );
-    imshow( "Padre 1", mat2 );  
-
-    namedWindow( "Padre 2", WINDOW_AUTOSIZE );
-    imshow( "Padre 2", mat3 );
-
-    namedWindow( "Hijo Final", WINDOW_AUTOSIZE );
-    imshow( "Hijo Final", mat_hijo );
-
-   
-    */
 
 
     waitKey(0);                                          // Wait for a keystroke in the window

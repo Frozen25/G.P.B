@@ -119,7 +119,7 @@ void Individual::randomize(){
 
 void Individual::getFitness_Array(std::vector<cv::Mat>* original){
     //std::cout << "getFitness_Array method\n";
-    for (int i = 0; i < divx*divy; ++i){
+    for (int i = 0; i < original->size(); ++i){
         if (comparacion_cuadros(&(image_vector[i]), &(original->at(i)) ) ){
             fitness_vector[i] = 1;
         }
@@ -226,4 +226,3 @@ bool Individual::comparacion_cuadros(cv::Mat* mat1, cv::Mat* mat2 ){
     else
         return false;
 }
-

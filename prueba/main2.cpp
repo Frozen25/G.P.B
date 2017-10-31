@@ -8,7 +8,7 @@
 #include "Individual.cpp"
 
 int divx = 10;
-int divy = 8;
+int divy = 4;
 int sizex;
 int sizey;
 

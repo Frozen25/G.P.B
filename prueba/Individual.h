@@ -18,7 +18,7 @@ class Individual {
 
         std::vector<cv::Mat> image_vector;
         std::vector<int> fitness_vector;
-
+        cv::Mat matriz;
         //cv::Mat image_array[];
         //int fitness_array[];
 

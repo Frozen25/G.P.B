@@ -19,10 +19,11 @@ class Population {
     	std::vector<Individual> People;
     	//std::vector<Individual*> Raza_Aria;
     	Individual Reference;
-    	Individual* b1;
-        Individual* b2;
-        Individual* b3;
+    	Individual b1;
+        Individual b2;
+        Individual b3;
         int size_Population;
+        int bestfit;
 
     public:
         Population();
@@ -33,6 +34,7 @@ class Population {
         Individual* getB2();
         Individual* getB3();
         std::vector<Individual>* getPeople();
+        int getBestfit();
         
 
         

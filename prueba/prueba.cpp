@@ -104,33 +104,7 @@ int main( int argc, char** argv )
 
 
 
-    /*
-    while ( divx*divy > contador)
-	{
-		std::cout << "going to calc fit\n";
-		poblacion.calcFitness();
-
-
-        contador = (poblacion.getB1())->getFitness(); 
-        (poblacion.getB1())->array_to_mat(&mat1);
-        (poblacion.getB2())->array_to_mat(&mat2);
-        (poblacion.getB3())->array_to_mat(&mat3);
-
-        
-        imshow( "Display window", image );                 
-        imshow( "Best 1", mat1 );  
-        imshow( "Best 2", mat2 );
-		imshow( "Best 3", mat3 );
-
-		poblacion.NewGen();
-
-        waitKey(0);   
-
-
-
-
-    }
-    */
+   
    
 
 
