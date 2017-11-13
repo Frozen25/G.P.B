@@ -19,6 +19,7 @@ class Population {
     	std::vector<Individual> People;
     	//std::vector<Individual*> Raza_Aria;
     	Individual Reference;
+        Individual* ref_p;
     	Individual b1;
         Individual b2;
         Individual b3;
@@ -27,7 +28,8 @@ class Population {
 
     public:
         Population();
-        Population(cv::Mat _image);
+        Population(cv::Mat _image , Individual* ref);
+        void setref (Individual* ref);
 		void calcFitness();
         void NewGen();
         Individual* getB1();
@@ -35,7 +37,8 @@ class Population {
         Individual* getB3();
         std::vector<Individual>* getPeople();
         int getBestfit();
-        
+        void randomize();
+
 
         
 

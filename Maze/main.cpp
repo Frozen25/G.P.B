@@ -3,7 +3,7 @@
 #include "interfaceFLTK/interfaz.h"
 
 
-int interfaz(int* posX , int* posY)
+int interfaz(int* posX , int* posY);
 
 int main()
 {

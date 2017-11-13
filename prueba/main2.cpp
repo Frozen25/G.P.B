@@ -7,8 +7,8 @@
 #include "common.h"
 #include "Individual.cpp"
 
-int divx = 10;
-int divy = 4;
+int divx ;
+int divy ;
 int sizex;
 int sizey;
 
@@ -34,6 +34,12 @@ int main( int argc, char** argv )
         cout <<  "Could not open or find the image" << std::endl ;
         return -1;
     }
+
+    cout << "Divisiones en X: ";
+    cin >> divx;
+    cout << "Divisiones en Y: ";
+    cin >> divy;
+
 
     sizex = image.cols/divx ;
     sizey = image.rows/divy ;

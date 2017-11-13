@@ -4,40 +4,43 @@
 
 Population::Population(){}
 
-Population::Population(cv::Mat _image){
+Population::Population(cv::Mat _image , Individual* ref){
     Reference = Individual(_image.clone());
     size_Population = 20;
     People.resize(size_Population);
     std::vector<Individual>  People(size_Population, Individual(Reference.get_vector() , true));
     for (int m = 0; m < size_Population ; ++m){
-            //Individual* temp = &Population[m];
-            (People[m]).randomize();
-            
-            //int p = temp->getFitness();
-            //std::cout << temp->getFitness() << " ";
-        }
+        Individual* temp = &People[m];
+        temp->randomize();
+    }
+    //std::cout<< "end" << std::endl;
 }
 
+void Population::randomize(){
+    for (int m = 0; m < size_Population ; ++m){
+            (People[m]).randomize();
+        }
+}
+void Population::setref(Individual* ref){
+    ref_p = ref;
+}
 
 void Population::calcFitness() {
+    std::cout << "calc fit vector " << std::endl;
     int max1=0;
     int max2=0;
     int max3=0;
 
     for (int m = 0; m < size_Population ; ++m){
         std::cout << m << std::endl;
-        Individual* temp = &(People[m]);
-        //std::cout << "got temp*\n";
-        std::cout << m << std::endl;
+        Individual* temp = &People[m];
+        
         temp->getFitness_Array(Reference.get_vector());
-        //std::cout << "made fit vector \n";
-        std::cout << m << std::endl;
         temp->calcFitness();
-        //std::cout << "calculated fit\n";
-
         int fit = temp->getFitness();
         std::cout << fit << " ";
 
+        
         if (fit > max1)
         {
             max3 = max2;    b3 = b2;

@@ -1,0 +1,16 @@
+instalar fltk
+
+
+sudo apt-get install libfltk1.3-dev
+
+
+
+compilar
+
+
+g++ p2.cpp -o p2 -std=c++11 `fltk-config --ldflags` -lpthread
+
+
+
+
+para el proyecto no olvidar -lpthread

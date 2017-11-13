@@ -51,13 +51,15 @@ void function_(){
 	//set start position
 	while ( setFlag == false )
 	{
-		std::cout << "Enter your starting position by first entering the row number.\n"
-			<< "Enter the row from 0 to " << (ROWS - 1) << std::endl;
-		std::cin >> row;
-		std::cout << "Now enter the column from 0 to " << (COLUMNS - 1) << std::endl;
-		std::cin >> col;
-		std::cout << std::endl;
-		std::cout << "The value you entered was: " << row << ", " << col << std::endl;
+		//std::cout << "Enter your starting position by first entering the row number.\n"
+			//<< "Enter the row from 0 to " << (ROWS - 1) << std::endl;
+		//std::cin >> row;
+			row =15;
+		//std::cout << "Now enter the column from 0 to " << (COLUMNS - 1) << std::endl;
+		//std::cin >> col;
+			col=0;
+		//std::cout << std::endl;
+		//std::cout << "The value you entered was: " << row << ", " << col << std::endl;
 		if ( maze1.getCell( row, col ) != '+' && maze1.getCell( row, col ) != 'E' )
 		{
 			maze1.setStart( row, col ); //set starting position on maze

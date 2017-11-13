@@ -1,10 +1,8 @@
-//interfaz.h
-#ifndef INTERFACE_H
-#define INTERFACE_H
 
 #include "GUI.h"
 #include <iostream>
-#include "../common.h"
+#include <fstream> 
+#include <string>
 
 #include <cstdlib>
 #include <ctime>
@@ -26,12 +24,16 @@ void play(Windows* window);
 
 
 
-int interfaz() {
+
+
+
+
+int main() {
     srand(time(0));
 
-    Windows window(Point(w/2, 0), 650, 650, "Interfaz" );
+    Windows window(Point(w/2, 0), 600, 600, "Interfaz" );
     std::vector <Rectangle> rectangulos;
-    char maze_[30][30];
+    char maze_e[30][30];
 
     std::string line;
     std::ifstream myfile ("m2.txt");
@@ -40,30 +42,30 @@ int interfaz() {
         while ( getline (myfile,line) ){
             for (int m=0; m < 30 ; ++m){
                 //std::cout << sizeof(line) << std:: std::endl;
-                maze_[n][m] = (line[m]);
+                maze_e[n][m] = (line[m]);
                 //cout << line << '\n';
                 }
             ++n;
             }
             myfile.close();
         }
-    maze_[ 23 ][ 29 ] = 'E';
-    maze_[ 15 ][ 0 ] = 'S';
+    maze_e[ 23 ][ 29 ] = 'E';
+    maze_e[ 15 ][ 0 ] = 'S';
 
     for (int i=0 ; i< 30 ; ++i){
         for (int j=0 ; j<30 ; ++j){
-            if (maze_[i][j]== '+'){
+            if (maze_e[i][j]== '+'){
                 rectangulos.push_back(Rectangle(Point(j*20,i*20),Point(j*20+20,i*20+20),3,FL_BLACK));
                 
             }
-            if (maze_[i][j]== '0'){
+            if (maze_e[i][j]== '0'){
                 rectangulos.push_back(Rectangle(Point(j*20,i*20),Point(j*20+20,i*20+20),3,FL_WHITE));
                 
             }
-            if ((maze_[i][j]== 'E')){
+            if ((maze_e[i][j]== 'E')){
                 rectangulos.push_back(Rectangle(Point(j*20,i*20),Point(j*20+20,i*20+20),3,FL_RED));
             }
-            if ((maze_[i][j]== 'S')){
+            if ((maze_e[i][j]== 'S')){
                 rectangulos.push_back(Rectangle(Point(j*20,i*20),Point(j*20+20,i*20+20),3,FL_GREEN));
             }
         }
@@ -75,58 +77,30 @@ int interfaz() {
 
     //std::thread functionThread(play, &window );
     //functionThread.detach();
+    
     play(&window);
-
 
     return Fl::run();
 }
 
 void play(Windows* window){
+    while(true){
+        int i = rand() % 29 ;
+        int j = rand() % 29 ;
 
-    //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        Rectangle rect(Point(j*20,i*20),Point((j+1)*20,(i+1)*20),3,FL_BLUE);
+
+        window->attach(rect);
     
-
-    int tx=0;
-    int ty=0;
-
-    //std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-    while( (posX!=23)&&(posY!=29) ){
-
-        int pointx = posX*20+10;
-        int pointy = posY*20+10;
-        std::cout << posX << " " << posY << std::endl;
-
-       // if( !(tx >20)&&(tx < 24)&&(ty <6)&&(ty > 3) ) {
-            //std::cout << "rect\n" ;
-        //if ((pointx > -1)&&(pointx < 600)&&(pointy > -1)&&( pointy < 600)){
-
-            Circle circle1(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
-
-
-        //if ((posX*20 > -1)&&(posX*20<600)&&(posY*20 > -1)&&(posY*20<600)){
-            //Rectangle rect(Point(posX*20,posY*20),Point(20,20),1,FL_BLUE);
-         //   Circle circle1(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
-
-            window->attach(circle1);
-    
-    //    }
-
-        tx=posX;
-        ty=posY;
-        //ServerPtr->cacheDataBase
-
-        //std::cout << "attached\n";
         
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        //ServerPtr->cacheDataBase
+        
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         Fl::check();
         Fl::redraw();
-         //std::cout << "redraw\n";
 
         
     }
     //return 0;
     
 }
-
-#endif //INTERFACE_H

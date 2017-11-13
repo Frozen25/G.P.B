@@ -119,7 +119,7 @@ bool Maze::backTrack( int row, int col )
 	posX = col;
 	posY = row;
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(33));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 //if we are still searching 
     // base case 1
 
