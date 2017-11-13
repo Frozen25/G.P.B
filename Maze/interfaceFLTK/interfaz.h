@@ -14,12 +14,11 @@
 
 
 
+#include "../Maze.h"
 
 
 
-
-    
-    
+char maze_[30][30];    
 
 
 void play(Windows* window);
@@ -31,7 +30,7 @@ int interfaz() {
 
     Windows window(Point(w/2, 0), 650, 650, "Interfaz" );
     std::vector <Rectangle> rectangulos;
-    char maze_[30][30];
+    //char maze_[30][30];
 
     std::string line;
     std::ifstream myfile ("m2.txt");
@@ -88,10 +87,10 @@ void play(Windows* window){
 
     int tx=0;
     int ty=0;
-
+    Circle circle1(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
     //std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-    while( (posX!=23)&&(posY!=29) ){
+    while( maze_[posY][posX] != 'E' ){
 
         int pointx = posX*20+10;
         int pointy = posY*20+10;
@@ -101,19 +100,19 @@ void play(Windows* window){
             //std::cout << "rect\n" ;
         //if ((pointx > -1)&&(pointx < 600)&&(pointy > -1)&&( pointy < 600)){
 
-            Circle circle1(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
+        circle1 = Circle(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
 
 
         //if ((posX*20 > -1)&&(posX*20<600)&&(posY*20 > -1)&&(posY*20<600)){
             //Rectangle rect(Point(posX*20,posY*20),Point(20,20),1,FL_BLUE);
          //   Circle circle1(Point(posX*20+10,posY*20+10),10,1,FL_BLUE,FL_BLUE);
 
-            window->attach(circle1);
+        window->attach(circle1);
     
     //    }
 
-        tx=posX;
-        ty=posY;
+        //tx=posX;
+        //ty=posY;
         //ServerPtr->cacheDataBase
 
         //std::cout << "attached\n";
