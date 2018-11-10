@@ -64,7 +64,7 @@ int main()
     yTF2 = m-1;
 
 
-
+    
     std::thread interfaceThread(interfaz);
    	interfaceThread.detach();
 
@@ -75,6 +75,7 @@ int main()
     	;
     }
 
+   
 
     std::cout<<"Start: "<< xPlayer <<","<<yPlayer<<std::endl;
     std::cout<<"Finish: "<< xGoal <<","<<yGoal<<std::endl;

@@ -1,7 +1,7 @@
 
 
 #include "Population.h"
-
+#include <iostream>     // std::std::cout
 Population::Population(){}
 
 Population::Population(cv::Mat _image , Individual* ref){

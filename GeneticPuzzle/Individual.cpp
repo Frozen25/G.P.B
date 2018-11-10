@@ -1,6 +1,6 @@
 #include "Individual.h"
 
-
+#include <iostream>     // std::std::cout
 
 Individual::Individual(){
     fitness = 0;
